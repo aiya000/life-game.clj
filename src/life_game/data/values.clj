@@ -1,6 +1,10 @@
 (ns life-game.data.values
   (:require [life-game.data.cell :as cell]))
 
+(def basic-birth #{(cell/new-cell 5 5)
+                   (cell/new-cell 6 5)
+                   (cell/new-cell 5 6)})
+
 (def nebra #{(cell/new-cell  5  5)
              (cell/new-cell  6  5)
              (cell/new-cell  7  5)
