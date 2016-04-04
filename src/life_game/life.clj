@@ -38,14 +38,27 @@
     (set (for [z surround-cells :when (live? z prev-cells)] z))))
 
 (defn- depop?
-  "The predicate of that cell will be dead by depopulated ?"
+  "The predicate of that cell will be dead by depopulated"
   [c prev-cells]
   (let [cells (cset/difference prev-cells #{c})
         surround-cells (surround c)
         exists-cells (cset/intersection surround-cells cells)]
     (<= (count exists-cells) 1)))
 
+(defn- over?
+  "The predicate of that cell will be dead by overcrowded"
+  [c prev-cells]
+  (let [cells (cset/difference prev-cells #{c})
+        surround-cells (surround c)
+        exists-cells (cset/intersection surround-cells cells)]
+    (>= (count exists-cells) 5)))
+
 (defn die-by-depop
-  "Return dead cell-set, the cause of their dead is depopulated"
+  "Return dead cell as set, its cause is depopulated"
   [prev-cells]
   (set (for [z prev-cells :when (depop? z prev-cells)] z)))
+
+(defn die-by-over
+  "Return dead cells as set, its cause overcrowded"
+  [prev-cells]
+  (set (for [z prev-cells :when (over? z prev-cells)] z)))
