@@ -13,12 +13,18 @@
 (def basic-die-depop #{(cell/new-cell 1 1)
                        (cell/new-cell 1 2)})
 
-; THese cells will dead by overcrowded
+; These cells will dead by overcrowded
 (def basic-die-over #{(cell/new-cell 1 1)
                       (cell/new-cell 1 2)
                       (cell/new-cell 1 3)
                       (cell/new-cell 2 1)
                       (cell/new-cell 2 2)})
+
+; These cells live in next generation
+(def basic-live #{(cell/new-cell 2 2)
+                  (cell/new-cell 2 3)
+                  (cell/new-cell 3 2)
+                  (cell/new-cell 3 3)})
 
 (deftest birth-test
   (testing "birth func generate birthed cells rightly."
@@ -34,3 +40,10 @@
   (testing "die-by-over func generate dead cells rightly."
     (let [dead-cells (life/die-by-over basic-die-over)]
       (is (empty? (cset/difference dead-cells basic-die-over))))))
+
+(deftest live-test
+  (testing "function 'birth', 'die-by-depop', 'die-by-over' does not change these cells."
+    (are [new-cells] (empty? new-cells)
+         (life/birth        basic-live)
+         (life/die-by-depop basic-live)
+         (life/die-by-over  basic-live))))
